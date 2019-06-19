@@ -29,11 +29,6 @@ int main()
 	letters *listHead = NULL;
 	fin(listHead);
 	letters *p = listHead;
-	while (p)
-	{
-		cout << p->word << " " << p->factor << endl;
-		p = p->next;
-	}
 
 	string path = "C:\\CPrj\\Scrabble\\area.txt";
 
