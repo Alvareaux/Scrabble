@@ -16,7 +16,6 @@ struct dictionary
 
 void fin(dictionary *&head);
 void give_dictionary(dictionary *&head, string temp);
-string **create_matrix(int n);
 int main()
 {
 	dictionary *dicHead = NULL;
@@ -74,15 +73,4 @@ void give_dictionary(dictionary *&head, string temp)
 	}
 	q->next = p;
 
-}
-
-string **create_matrix(int n)
-{
-	string **arr = new string*[n];
-	for (int i = 0; i < n; i++)
-	{
-		*(arr + i) = new string[n];
-	}
-
-	return arr;
 }
