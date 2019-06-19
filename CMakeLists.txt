@@ -3,4 +3,4 @@ project(Scrabble)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Scrabble main.cpp)
+add_executable(Scrabble main.cpp misc_func.h misc_func.cpp game_func.cpp game_func.h)

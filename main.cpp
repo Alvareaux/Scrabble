@@ -1,24 +1,31 @@
 #include <iostream>
 #include <string>
+#include <windows.h>
+
+#include "misc_func.h"
+#include "game_func.h"
 
 using namespace std;
 
-int **CreateMatrix(int n);
+const int N = 15;
 
 int main()
 {
-    int **playground = CreateMatrix(15);
-    int **area = CreateMatrix(15);
+    SetConsoleOutputCP(CP_UTF8);
+
+    string path = "C:\\CPrj\\Scrabble\\area.txt";
+
+    string **playground = CreateMatrixString(N);
+    int **area = CreateMatrixInt(N);
+
+    if (InputFromFile(area, N, path))
+    {
+        DisplayPlayground(playground, area);
+    }
+
+    system("pause");
     return 0;
 }
 
-int **CreateMatrix(int n)
-{
-    int **arr = new int*[n];
-    for (int i = 0; i < n; i++)
-    {
-        *(arr + i) = new int[n];
-    }
 
-    return arr;
-}
+
