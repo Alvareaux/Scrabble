@@ -4,44 +4,8 @@
 #include <sstream>
 #include <fstream>
 #include <string>
+#include "dictionary.h"
 
-using namespace std;
-
-struct dictionary
-{
-	string word;
-	string mean;
-	dictionary *next;
-};
-
-struct letters
-{
-	string word;
-	int factor;
-	letters *next;
-};
-
-void fin(dictionary *&head);
-void give_dictionary(dictionary *&head, string temp);
-void fin(letters *&head);
-void give_dictionary(letters *&head, string temp);
-void give_letters(letters *&head, string temp, int n);
-
-int main()
-{
-	dictionary *dicHead = NULL;
-	fin(dicHead);
-	letters *listHead = NULL;
-	fin(listHead);
-	letters *p = listHead;
-	while (p)
-	{
-		cout << p->word << " " << p->factor << endl;
-		p = p->next;
-	}
-	system("pause");
-	return 0;
-}
 
 void fin(dictionary *&head)
 {
