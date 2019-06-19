@@ -26,9 +26,8 @@ int main()
 {
 	dictionary *dicHead = NULL;
 	fin(dicHead);
-	letters *listHead = NULL;
-	fin(listHead);
-	letters *p = listHead;
+	letters *letterHead = NULL;
+	fin(letterHead);
 
 	string path = "C:\\CPrj\\Scrabble\\area.txt";
 
