@@ -1,33 +1,92 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <math.h>
+#include <windows.h>
 
 #include "game_func.h"
 
 using namespace std;
 
+HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
 void DisplayPlayground(string **playground, int **area, int n)
 {
+    cout << "\t\t    -";
     for (int i = 0; i < n; i++)
     {
+        cout << "----";
+    }
+    cout << endl;
+
+
+    cout << "\t\t    | ";
+    for (int i = 0; i < n; i++)
+    {
+        if (i < 10)
+        {
+            SetConsoleTextAttribute(hConsole, 2);
+            cout << "" << i;
+            SetConsoleTextAttribute(hConsole, 7);
+            cout << " |";
+        }
+        else
+        {
+            SetConsoleTextAttribute(hConsole, 2);
+            cout << i;
+            SetConsoleTextAttribute(hConsole, 7);
+            cout << "|";
+        }
+
+        cout << " ";
+    }
+    cout << endl;
+
+    cout << "\t\t-";
+    for (int i = 0; i < n + 1; i++)
+    {
+        cout << "----";
+    }
+    cout << endl;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (i < 10)
+        {
+            cout << "\t\t| ";
+            SetConsoleTextAttribute(hConsole, 2);
+            cout << i;
+            SetConsoleTextAttribute(hConsole, 7);
+            cout << " | ";
+        }
+        else
+        {
+            cout << "\t\t| ";
+            SetConsoleTextAttribute(hConsole, 2);
+            cout << i;
+            SetConsoleTextAttribute(hConsole, 7);
+            cout << "| ";
+        }
+
         for (int j = 0; j < n; j++)
         {
             if ((*(*(playground + i) + j)).empty())
             {
                 if (*(*(area + i) + j) == 1)
                 {
-                    cout << "  ";
+                    cout << "  |";
                 }
                 else
                 {
                     if (*(*(area + i) + j) < 0)
                     {
-                        cout << *(*(area + i) + j);
+                        SetConsoleTextAttribute(hConsole, 1);
+                        cout << -(*(*(area + i) + j));
+                        SetConsoleTextAttribute(hConsole, 7);
+                        cout << " |";
                     }
                     else
                     {
-                        cout << " " << *(*(area + i) + j);
+                        cout << (*(*(area + i) + j)) << " |";
                     }
                 }
             }
@@ -36,9 +95,16 @@ void DisplayPlayground(string **playground, int **area, int n)
                 cout << *(*(playground + i) + j);
             }
 
-            cout << "  ";
+            cout << " ";
         }
 
-        cout << "\n\n";
+        cout << endl;
+        cout << "\t\t-";
+        for (int i = 0; i < n + 1; i++)
+        {
+            cout << "----";
+        }
+        cout << endl;
+
     }
 }

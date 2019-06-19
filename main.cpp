@@ -9,6 +9,15 @@ using namespace std;
 
 const int N = 15;
 
+struct player
+{
+    int id;
+    string name;
+
+    int score;
+    
+};
+
 int main()
 {
     SetConsoleOutputCP(CP_UTF8);
@@ -20,6 +29,7 @@ int main()
 
     if (InputFromFile(area, N, path))
     {
+        cout << "\n\n\n\n";
         DisplayPlayground(playground, area);
     }
 
