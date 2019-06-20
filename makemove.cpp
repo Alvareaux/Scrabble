@@ -53,37 +53,48 @@ void rand_letter(letters *&listHead, letters *&letterHead)
 	q->factor = p->factor;
 	q->next = NULL;
 
-	delete_letter(letterHead, p);
+	delete_letter(letterHead, p->word);
 	give_list(listHead, q->word, q->factor);
 
 }
-void input_letters(letters *listHead, letters *&wordHead)
+void input_word(letters *listHead, string &word)
 {
-	letters *p = listHead;
-	int num, ind = 0;
-	cout << "select letter number\n";
+	string letter;
+	string temp;
+	int ind;
+	cout << "list of available letters:\n";
 	letters_output(listHead);
 	do
 	{
-		cin >> num;
-		if (num < 0 || num >= list_counter(listHead))
+		ind = 0;
+		cout << "make a word\n";
+		cin >> word;
+		if (word.size() < 1 || word.size() > 8)
 		{
+			cout << "wrong number of letters\n";
 			ind = 1;
 		}
+		
+
+		for (int i = 0; i < word.size(); i++)
+		{
+			temp = word[i];
+			if (check(listHead, temp))
+			{
+				cout << "you used third-party letters\n";
+				ind = 1;
+			}
+		}
+			
 	} while (ind);
-	for (int i = 0;i < num;i++)
-	{
-		p = p->next;
-	}
-	give_list(wordHead, p->word, p->factor);
+	
 }
 
 void make_move(letters *&listHead, letters *&letterHead, dictionary *dicHead)
 {
 	int ind = 1, choice;
-	letters *wordHead = NULL;
-	coords *coordHead = NULL;
-	letters *p;
+	string word;
+	string temp;
 
 	cout << "make your move\n";
 	cout << "want to pick a word manually, or call an assistant\n";
@@ -92,29 +103,18 @@ void make_move(letters *&listHead, letters *&letterHead, dictionary *dicHead)
 	{
 		do
 		{
-			do
-			{
-				input_letters(listHead, wordHead);
-				give_coords(coordHead);
-				cout << "would you like to continue,0 - yes, 1 - no?\n";
-				cin >> choice;
-				if (choice || !listHead)
-				{
-					ind = 0;
-				}
-			} while (ind);
-			if (check(dicHead, wordHead))
+			input_word(listHead, word);
+			if (check(dicHead, word))
 			{
 				cout << "there is no such word in your dictionary\n";
 			}
-		} while (check(dicHead, wordHead));
-
-		p = wordHead;
-		while (p)
+		} while (check(dicHead, word));
+		for (int i = 0;i < word.size();i++)
 		{
-			delete_letter(listHead, p);
-			p = p->next;
+			temp = word[i];
+			delete_letter(listHead, temp);
 		}
+
 		for (int i = list_counter(listHead) - 1;i < 7;i++)
 		{
 			rand_letter(listHead, letterHead);
@@ -126,3 +126,4 @@ void make_move(letters *&listHead, letters *&letterHead, dictionary *dicHead)
 	}
 
 }
+
