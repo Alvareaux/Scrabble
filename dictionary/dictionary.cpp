@@ -112,3 +112,45 @@ void give_letters(letters *&head, string temp, int n)
 	}
 	q->next = p;
 }
+
+void give_coords(coords *&head)
+{
+	int ind;
+	coords *p = new coords;
+
+	do
+	{
+		ind = 0;
+		cout << "enter the coordinates of the letter\n";
+		cin >> p->x >> p->y;
+		p->next = NULL;
+		if (p->x >= 15 || p->x < 0 || p->y < 0 || p->y >= 15)
+		{
+			cout << "going beyond the board\n";
+			ind = 1;
+		}
+		if (head)
+		{
+			if (p->x != head->x && p->y != head->y)
+			{
+				cout << "disrupted letter order\n";
+				ind = 1;
+			}
+		}
+
+	} while (ind);
+
+	if (!head)
+	{
+		head = p;
+		return;
+	}
+
+
+	coords *q = head;
+	while (q->next)
+	{
+		q = q->next;
+	}
+	q->next = p;
+}
