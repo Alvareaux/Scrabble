@@ -9,6 +9,7 @@ int list_counter(letters *head);
 int check(dictionary *head, letters *wordHead);
 int check(letters *head, string word);
 int check(dictionary *head, string word);
+int check_location(dictionary *head, string **arr, int x, int y);
 #endif
 
 
