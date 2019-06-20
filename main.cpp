@@ -8,6 +8,8 @@
 #include "dictionary.h"
 #include "misc_func.h"
 #include "game_func.h"
+#include "additional_func.h"
+#include "makemove.h"
 
 using namespace std;
 
@@ -39,6 +41,14 @@ int main()
 		cout << "\n\n\n\n";
 		DisplayPlayground(playground, area);
 	}
+	
+	letters *listHead = NULL;
+	srand(time(0));
+	for (int i = 0;i < 7;i++)
+	{
+		rand_letter(listHead, letterHead);
+	}
+	make_move(listHead,letterHead, dicHead);
 	system("pause");
 	return 0;
 }
