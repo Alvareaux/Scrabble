@@ -8,7 +8,7 @@
 #include "additional_func.h"
 using namespace std;
 
-void delete_letter(letters *&head, letters *x)
+void delete_letter(letters *&head, string x)
 {
 	if (!head)
 	{
@@ -17,7 +17,7 @@ void delete_letter(letters *&head, letters *x)
 	letters *p = head;
 	letters *q;
 
-	if (head->word == x->word)
+	if (head->word == x)
 	{
 		head = head->next;
 		delete p;
@@ -25,7 +25,7 @@ void delete_letter(letters *&head, letters *x)
 	}
 
 	q = p->next;
-	while (q->word != x->word && q->next)
+	while (q->word != x && q->next)
 	{
 		p = p->next;
 		q = p->next;
@@ -87,6 +87,34 @@ int check(dictionary *head, letters *wordHead)
 		word += q->word;
 		q = q->next;
 	}
+	while (p)
+	{
+		if (p->word == word)
+		{
+			return 0;
+		}
+		p = p->next;
+	}
+	return 1;
+}
+
+int check(dictionary *head,string word)
+{
+	dictionary *p = head;
+	while (p)
+	{
+		if (p->word == word)
+		{
+			return 0;
+		}
+		p = p->next;
+	}
+	return 1;
+}
+
+int check(letters *head, string word)
+{
+	letters *p = head;
 	while (p)
 	{
 		if (p->word == word)
