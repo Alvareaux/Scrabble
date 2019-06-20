@@ -3,10 +3,11 @@
 using namespace std;
 #ifndef ADDITIONAL_FUNC_H
 #define ADDITIONAL_FUNC_H
-void delete_letter(letters *&head, letters *x);
+void delete_letter(letters *&head, string x);
 void letters_output(letters *head);
 int list_counter(letters *head);
 int check(dictionary *head, letters *wordHead);
+int check(letters *head, string word);
 int check(dictionary *head, string word);
 #endif
 
