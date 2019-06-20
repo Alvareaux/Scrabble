@@ -125,3 +125,52 @@ int check(letters *head, string word)
 	}
 	return 1;
 }
+int check_location(dictionary *head, string **arr, int x, int y)
+{
+	int i = x;
+	int j = y;
+	int k, l;
+	string str = " ";
+	string word;
+	while (arr[i][j] != str && i >= 0)
+	{
+		i--;
+	}
+	k = i;
+	while (arr[i][j] != str && i < 15)
+	{
+		i++;
+	}
+	l = i;
+	for (i = k + 1;i < l;i++)
+	{
+		word += arr[i][j];
+	}
+	if (check(head, word))
+	{
+		cout << "there is no such word in your dictionary\n";
+		return 0;
+	}
+	word.clear();
+	i = x;
+	while (arr[i][j] != str && j >= 0)
+	{
+		j--;
+	}
+	k = j;
+	while (arr[i][j] != str && j < 15)
+	{
+		j++;
+	}
+	l = j;
+	for (j = k + 1;j < l;j++)
+	{
+		word += arr[i][j];
+	}
+	if (check(head, word))
+	{
+		cout << "there is no such word in your dictionary\n";
+		return 0;
+	}
+	return 1;
+}
