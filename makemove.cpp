@@ -40,17 +40,19 @@ void rand_letter(letters *&listHead, letters *&letterHead)
 	int ind = 1;
 	letters *p = letterHead;
 	letters *q = new letters;
-	while (p && ind)
+	int r = rand() % 148;
+	for (int i = 0;i < r;i++)
 	{
-		if (rand() % 14 == 8)
-		{
-			q->word = p->word;
-			q->factor = p->factor;
-			q->next = NULL;
-			ind = 0;
-		}
 		p = p->next;
+		if (!p->next)
+		{
+			p = letterHead;
+		}
 	}
+	q->word = p->word;
+	q->factor = p->factor;
+	q->next = NULL;
+
 	delete_letter(letterHead, p);
 	give_list(listHead, q->word, q->factor);
 
