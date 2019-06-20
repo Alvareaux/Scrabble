@@ -1,14 +1,14 @@
+#ifndef SCRABBLE_DICTIONARY_H
+#define SCRABBLE_DICTIONARY_H
+
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
 #include <sstream>
 #include <fstream>
 #include <string>
+
 using namespace std;
-#ifndef DICTIONARY_H
-#define DICTIONARY_H
-
-
 
 struct dictionary
 {
@@ -23,19 +23,12 @@ struct letters
 	int factor;
 	letters *next;
 };
-struct coords
-{
-	int x;
-	int y;
-	coords *next;
-};
+
+
 void fin(dictionary *&);
-void give_dictionary(dictionary *&, string);
+void PushToDict(dictionary *&head, string temp);
 void fin(letters *&);
-void give_letters(letters *&, string, int);
-void give_coords(coords *&head);
+void PushToLetters(letters *&head, string word, int n);
+int LetterScore(string letter);
 
-#endif
-
-
-
+#endif //SCRABBLE_DICTIONARY_H
