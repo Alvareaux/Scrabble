@@ -202,8 +202,14 @@ void InputWord(letters *listHead, string &word)
     do
     {
         ind = 0;
-        cout << "Make a word: ";
+        cout << "Make a word or write \'*\' to swap: ";
         cin >> word;
+
+        if (word == "*")
+        {
+            return;
+        }
+
         if ((word.size() < 1) || (word.size() > 8))
         {
             cout << "Wrong number of letters\n";
@@ -261,6 +267,13 @@ void MakeMove(string **playground, int **area, letters *&listHead, dictionary *d
             do
             {
                 InputWord(p -> list, word);
+                if (word == "*")
+                {
+                    cout << "Write letters to swap like \'ABCDC\': ";
+                    cin >> temp;
+                    SwapHand(p, listHead, temp);
+                    return;
+                }
                 if (Check(dictHead, word))
                 {
                     cout << "There is no such word in your dictionary" << endl;

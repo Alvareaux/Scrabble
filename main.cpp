@@ -73,7 +73,8 @@ int main()
         {
             system("CLS");
 
-            cout << "SCRABBLE";
+            cout << "SCRABBLE" << endl;
+            cout << "Game by Anatolii Voitko and Ihor Nekhaienko" << endl;
             cout << "\n\tTurn " << turn << "\n";
             cout << "\tPlayer " << active -> id << "\n\n";
 
