@@ -203,7 +203,7 @@ void InputWord(letters *listHead, string &word)
 
 	do
 	{
-		//Clone(listHead, tempHead);
+		Clone(listHead, tempHead);
 
 		ind = 0;
 		cout << "Make a word: ";
@@ -217,12 +217,12 @@ void InputWord(letters *listHead, string &word)
 		for (int i = 0; i < word.size(); i++)
 		{
 			temp = word[i];
-			if (Check(listHead, temp))
+			if (Check(tempHead, temp))
 			{
 				cout << "You used forbidden letters\n";
 				ind = 1;
 			}
-			//DeleteLetter(tempHead, temp);
+			DeleteLetter(tempHead, temp);
 		}
 
 	} while (ind);
