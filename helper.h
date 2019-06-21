@@ -6,10 +6,10 @@ using namespace std;
 #include "lib/additional_func.h"
 #ifndef HELPER_H
 #define HELPER_H
-void helpList(string s, letters *listHead, letters *helpHead);
+void helpList(string s, letters *listHead, letters *&helpHead);
 void assisstant(string s, letters *listHead, dictionary *dictHead);
 void sort_bubl(string s, int n);
-void mix(string s, int n, letters *listHead, dictionary *dictHead, letters*helpHead);
+void mix(string s, int n, letters *listHead, dictionary *dictHead, letters*&helpHead);
 string Minus(string s);
 void display(string s, int n);
 string CheckMeaning(dictionary *head, string s);
