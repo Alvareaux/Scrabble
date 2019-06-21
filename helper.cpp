@@ -95,7 +95,7 @@ void HelperDisplay(letters *helpHead, dictionary *dictHead)
 
 }
 
-void helpList(string s, letters *listHead, letters *helpHead)
+void helpList(string s, letters *listHead, letters *&helpHead)
 {
 	letters *p = listHead;
 	string temp;
@@ -110,7 +110,7 @@ void helpList(string s, letters *listHead, letters *helpHead)
 	PushToLetters(helpHead, s, count);
 }
 
-void mix(string s, int n, letters *listHead, dictionary *dictHead, letters*helpHead)
+void mix(string s, int n, letters *listHead, dictionary *dictHead, letters*&helpHead)
 {
 	char buf;
 	int k, q, j, i;
