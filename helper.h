@@ -12,7 +12,6 @@ void sort_bubl(string s, int n);
 void mix(string s, int n, letters *listHead, dictionary *dictHead, letters*&helpHead);
 string Minus(string s);
 void display(string s, int n);
-string CheckMeaning(dictionary *head, string s);
 int CheckCost(letters *head, string s);
 
 #endif //HELPER_H
