@@ -27,19 +27,6 @@ int CheckCost(letters *head, string s)
 	return -1;
 }
 
-string CheckMeaning(dictionary *head, string s)
-{
-	dictionary *p = head;
-	while (p)
-	{
-		if (p->word == s)
-		{
-			return p->mean;
-		}
-		p = p->next;
-	}
-	return "error";
-}
 string Minus(string s)
 {
 	string temp;
@@ -89,7 +76,7 @@ void HelperDisplay(letters *helpHead, dictionary *dictHead)
 	letters *p = helpHead;
 	while (p)
 	{
-		cout << p->word << "(" << p->factor << ")  " << CheckMeaning << endl;
+		cout << p->word << "(" << p->factor << ")" << endl;
 		p = p->next;
 	}
 
