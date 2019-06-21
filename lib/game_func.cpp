@@ -168,7 +168,15 @@ void OutputHand(player *p)
     cout << "\t\t";
     while (q)
     {
-        cout << q -> factor << " ";
+        if (q -> factor >= 10)
+        {
+            cout << q -> factor << " ";
+        }
+        else
+        {
+            cout << q -> factor << "  ";
+        }
+
         q = q -> next;
     }
     cout << endl;
@@ -178,7 +186,7 @@ void OutputHand(player *p)
     cout << "\t\t";
     while (q)
     {
-        cout << q -> word << " ";
+        cout << q -> word << "  ";
         q = q -> next;
     }
     cout << endl;

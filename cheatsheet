@@ -9,10 +9,13 @@ game_func
     void GiveHand(player &p, letters *&letterHead);
         Дает нужное количество букв
 
+    void OutputHand(player *p);
+        Выводит руку
+
     void InputWord(letters *listHead, string &word);
         Не выпускает из цикла пока не будет введено нормально слово
 
-    void MakeMove(string **playground, int **area, letters *&listHead, dictionary *dictHead, player &p);
+    void MakeMove(string **playground, int **area, letters *&listHead, dictionary *dictHead, player *&p);
         Делает ход, вызывает помощника если надо, проверяет слово, проверяет координаты. Удаляет введенные буквы,
         начисляет очки
 
@@ -23,7 +26,58 @@ game_func
         Закидывает слово в игровое поле, если оно не заменяет другие буквы. Если по итогу слово меняет чужую букву или
         не существует то удаляет и передает -1, иначе передает очки
 
-    void ChangePlayer(player *&active, player first, player second);
+    void ChangePlayer(player *&active, player *first, player *second);
         Меняет активного игрока
 
+    void SwapHand(player *&active, letters *&letterList, string swap);
+        Меняет руку
 
+dictionary
+
+    void fin(dictionary *&);
+        Ввод словаря с файлов
+
+    void PushToDict(dictionary *&head, string temp);
+        Закидывает слова в словарь который список
+
+    void fin(letters *&);
+        Ввод букв с файла
+
+    void PushToLetters(letters *&head, string word, int n);
+        Закидывает буквы в список букв
+
+    int LetterScore(string letter);
+        Возвращает количество очков по букве
+
+
+additional_func
+
+    void DeleteLetter(letters *&head, string x);
+        Удаляет букву
+
+    int Check(letters *head, string word);
+        Проверяет наличие буквы
+
+    int Check(dictionary *head, string word);
+        Проверяет наличие слова
+
+
+misc_func
+
+    int **CreateMatrixInt(int n);
+        Создает матрицу интов
+
+    string **CreateMatrixString(int n);
+        Создает матрицу стрингов
+
+    int InputFromFile(int **arr, int n, string path);
+        Ввод поля с файла
+
+    void DeleteMatrix(int **arr, int n);
+        Удаление матрицы интов
+
+    void DeleteMatrix(string **arr, int n);
+        Удаление матрицы стрингов
+
+    void Clone(string **arr1, string **arr2, int n);
+        Клонирование матрицы в первую с второй
