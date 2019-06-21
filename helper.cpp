@@ -92,6 +92,7 @@ void helpList(string s, letters *listHead, letters *&helpHead)
 	{
 		temp = s[i];
 		count += CheckCost(listHead, temp);
+		i++;
 		p = p->next;
 	}
 	PushToLetters(helpHead, s, count);
