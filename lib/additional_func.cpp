@@ -92,7 +92,6 @@ void Clone(letters *head1, letters *&head2)
 	head2->factor = head2->factor;
 	p = head2;
 	q = head1->next;
-	letters*q = head2;
 	while (q)
 	{
 		p->next = new letters;
