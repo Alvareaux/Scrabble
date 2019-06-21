@@ -15,16 +15,6 @@ using namespace std;
 
 const int N = 15;
 
-struct player
-{
-	int id;
-	string name;
-
-	letters *list;
-
-	int score;
-};
-
 int main()
 {
     srand(time(0));
@@ -46,9 +36,11 @@ int main()
 	if (InputFromFile(area, N, path))
 	{
 		cout << "SCRABBLE" << endl;
-        cout << "TP-82" << endl;
+		cout << "Game by Anatolii Voitko and Ihor Nekhaienko" << endl;
+		cout << "https://github.com/Alvareaux/Scrabble" << endl;
+        cout << "\t[TP-82]" << endl;
 
-        cout << "Loading\n" << endl;
+        cout << "\t\nLoading\n" << endl;
 
         dictionary *dictHead = NULL;
         fin(dictHead);
@@ -63,34 +55,76 @@ int main()
         first.score = 0;
         second.score = 0;
 
-        cout << "Input player 1 name: ";
-        cin >> first.name;
+        first.list = NULL;
+        second.list = NULL;
+        GiveHand(first, letterHead);
+        GiveHand(second, letterHead);
 
-        cout << "Input player 2 name: ";
-        cin >> second.name;
+        player *active = &first;
 
-        int step = 0;
+        cout << "Game features: " << endl;
+        cout << "\tBlue numbers are word multipliers" << endl;
+        cout << "\tWhite numbers are letter multipliers\n" << endl;
+
+        system("pause");
+
+        int turn = 1;
         do
         {
             system("CLS");
 
-            cout << "\n\n\n\n";
+            cout << "SCRABBLE";
+            cout << "\n\tTurn " << turn << "\n";
+            cout << "\tPlayer " << active -> id << "\n\n";
+
+            cout << "\tPlayer 1 score: " << first.score << endl;
+            cout << "\tPlayer 2 score: " << second.score << endl;
+
+            cout << endl;
+
             DisplayPlayground(playground, area);
 
+            cout << "\n\tYour hand:" << endl;
+            OutputHand(active);
 
+            MakeMove(playground, area, letterHead, dictHead, active);
+            GiveHand(*active, letterHead);
+
+            system("pause");
+
+            ChangePlayer(active, &first, &second);
+            turn++;
         }
-        while (true);
+        while (letterHead);
 
+        system("CLS");
 
+        cout << "SCRABBLE";
+        cout << "\n\tTurn " << turn << "\n";
+        cout << "\tPlayer " << active -> id << "\n\n";
+
+        cout << "\tPlayer 1 score: " << first.score << endl;
+        cout << "\tPlayer 2 score: " << second.score << endl;
+
+        cout << endl;
+
+        DisplayPlayground(playground, area);
+
+        cout << endl;
+
+        if (first.score > second.score)
+        {
+            cout << "\tPlayer 1 win!";
+        }
+        else if (first.score < second.score)
+        {
+            cout << "\tPlayer 2 win!";
+        }
+        else if (first.score == second.score)
+        {
+            cout << "\tDead heat!";
+        }
 	}
-	
-	letters *listHead = NULL;
-
-	// for (int i = 0;i < 7;i++)
-    //	{
-    //        RandLetter(listHead, letterHead);
-    //	}
-    //    MakeMove(listHead, letterHead, dicHead);
 
 	system("pause");
 	return 0;

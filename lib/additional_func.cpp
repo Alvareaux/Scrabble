@@ -53,30 +53,6 @@ void DeleteLetter(letters *&head, string x)
 	}
 }
 
-void LettersOutput(letters *head)
-{
-	letters *p = head;
-	while (p)
-	{
-		cout << p -> word << " " << p -> factor << " ";
-		p = p -> next;
-	}
-	cout << endl;
-}
-
-int ListCounter(letters *head)
-{
-	int i = 1;
-	letters *p = head;
-	while (p)
-	{
-		i++;
-		p = p -> next;
-	}
-
-	return i;
-}
-
 int Check(dictionary *head, string word)
 {
 	dictionary *p = head;

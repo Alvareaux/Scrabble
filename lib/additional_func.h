@@ -7,8 +7,6 @@
 using namespace std;
 
 void DeleteLetter(letters *&head, string x);
-void LettersOutput(letters *head);
-int ListCounter(letters *head);
 
 int Check(letters *head, string word);
 int Check(dictionary *head, string word);

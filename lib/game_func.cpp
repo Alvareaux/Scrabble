@@ -4,9 +4,9 @@
 #include <Windows.h>
 
 #include "game_func.h"
-#include "../dictionary/dictionary.h"
 #include "additional_func.h"
-#include "../main.cpp"
+#include "misc_func.h"
+#include "../dictionary/dictionary.h"
 
 using namespace std;
 
@@ -73,7 +73,7 @@ void DisplayPlayground(string **playground, int **area, int n)
 
         for (int j = 0; j < n; j++)
         {
-            if ((*(*(playground + i) + j)).empty())
+            if ((*(*(playground + i) + j)) == " ")
             {
                 if (*(*(area + i) + j) == 1)
                 {
@@ -96,7 +96,10 @@ void DisplayPlayground(string **playground, int **area, int n)
             }
             else
             {
+                SetConsoleTextAttribute(hConsole, 6);
                 cout << *(*(playground + i) + j);
+                SetConsoleTextAttribute(hConsole, 7);
+                cout << " |";
             }
 
             cout << " ";
@@ -140,21 +143,60 @@ void RandLetter(letters *&listHead, letters *&letterHead)
     DeleteLetter(letterHead, p -> word);
 }
 
+void GiveHand(player &p, letters *&letterHead)
+{
+    letters *q = p.list;
+    int count = 0;
+
+    while (q)
+    {
+        q = q -> next;
+        count++;
+    }
+
+    for (int i = 0; i < 7 - count; i++)
+    {
+        RandLetter(p.list, letterHead);
+    }
+
+}
+
+void OutputHand(player *p)
+{
+    letters *q = p -> list;
+
+    cout << "\t\t";
+    while (q)
+    {
+        cout << q -> factor << " ";
+        q = q -> next;
+    }
+    cout << endl;
+
+    q = p -> list;
+
+    cout << "\t\t";
+    while (q)
+    {
+        cout << q -> word << " ";
+        q = q -> next;
+    }
+    cout << endl;
+
+}
+
 void InputWord(letters *listHead, string &word)
 {
     string letter;
     string temp;
     int ind;
 
-    cout << "List of available letters:";
-    LettersOutput(listHead);
-
     do
     {
         ind = 0;
-        cout << "Make a word:\n";
+        cout << "Make a word: ";
         cin >> word;
-        if (word.size() < 1 || word.size() > 8)
+        if ((word.size() < 1) || (word.size() > 8))
         {
             cout << "Wrong number of letters\n";
             ind = 1;
@@ -174,7 +216,7 @@ void InputWord(letters *listHead, string &word)
     while (ind);
 }
 
-void MakeMove(string **playground, int **area, letters *&listHead, dictionary *dictHead, player &p)
+void MakeMove(string **playground, int **area, letters *&listHead, dictionary *dictHead, player *&p)
 {
     int choice;
     string word;
@@ -182,81 +224,98 @@ void MakeMove(string **playground, int **area, letters *&listHead, dictionary *d
 
     string direction;
     int x, y;
-    int ind;
+    int ind, ind0;
+    int score;
 
     cout << "Make your move" << endl;
-    cout << "Want to pick a word manually(1), or call an assistant(0):";
+    cout << "Want to pick a word manually(1), change hand(-1) or call an assistant(0): ";
     cin >> choice;
 
-    if (!choice)
+    if (choice == 0)
     {
         // Тут будет открываться помощник в другом окне
+        system ("start C:\\CPrj\\Scrabble\\helper\\helper.exe");
     }
 
-    do
+    if (choice == -1)
     {
-        InputWord(listHead, word);
-        if (Check(dictHead, word))
-        {
-            cout << "There is no such word in your dictionary\n";
-        }
+        cout << "Write letters to swap like \'ABCDC\': ";
+        cin >> temp;
+        SwapHand(p, listHead, temp);
     }
-    while (Check(dictHead, word));
-
-    ind = 1;
-    do
+    else
     {
-        cout << "Input coordinates of first letter: ";
-        cin >> x >> y;
 
-        if (((x >= 0) && (y >= 0)) && ((x <= 14) && (y <= 14)))
+        ind0 = 1;
+        do
         {
-            ind = 0;
-        }
-        else
-        {
-            cout << "Wrong coordinates" << endl;
-        }
-    }
-    while (ind);
 
-    ind = 1;
-    do
-    {
-        cout << "Input direction(r/l/t/b): ";
-        cin >> direction;
-
-        if (((direction == "r") && (direction == "l")) && ((direction == "t") && (direction == "b")))
-        {
-            if (CheckDirection(word.size(), x, y, direction))
+            do
             {
-                ind = 0;
+                InputWord(p -> list, word);
+                if (Check(dictHead, word))
+                {
+                    cout << "There is no such word in your dictionary" << endl;
+                }
             }
-            else
+            while (Check(dictHead, word));
+
+            ind = 1;
+            do
             {
-                cout << "Wrong don`t fit" << endl;
+                cout << "Input coordinates of first letter: ";
+                cin >> y >> x;
+
+                if (((x >= 0) && (y >= 0)) && ((x <= 14) && (y <= 14)))
+                {
+                    ind = 0;
+                } else
+                {
+                    cout << "Wrong coordinates" << endl;
+                }
+            }
+            while (ind);
+
+            ind = 1;
+            do
+            {
+                cout << "Input direction(r/l/t/b): ";
+                cin >> direction;
+
+                if (((direction == "r") || (direction == "l")) || ((direction == "t") || (direction == "b")))
+                {
+                    if (CheckDirection(word.size(), x, y, direction))
+                    {
+                        ind = 0;
+                    } else
+                    {
+                        cout << "Word don`t fit" << endl;
+                    }
+                } else
+                {
+                    cout << "Wrong direction" << endl;
+                }
+            }
+            while (ind);
+
+            score = PullWord(playground, area, x, y, direction, word);
+            if (score == -1)
+            {
+                cout << "Letter collision" << endl;
+            } else
+            {
+                p -> score += score;
+                ind0 = 0;
             }
         }
-        else
+        while (ind0);
+
+        for (int i = 0; i < word.size(); i++)
         {
-            cout << "Wrong direction" << endl;
+            temp = word[i];
+            DeleteLetter(p -> list, temp);
         }
     }
-    while (ind);
-
-    p.score += PullWord(playground, area, x, y, direction, word);
-
-    for (int i = 0; i < word.size(); i++)
-    {
-        temp = word[i];
-        DeleteLetter(listHead, temp);
-    }
-
-    for (int i = ListCounter(listHead) - 1; i < 7; i++)
-    {
-        RandLetter(listHead, p.list);
-    }
-
 }
 
 int CheckDirection(int len, int x, int y, string direction)
@@ -320,6 +379,11 @@ int CheckDirection(int len, int x, int y, string direction)
 
 int PullWord(string **playground, int **area, int x, int y, string direction, string word)
 {
+    int multiplier = 0;
+    string **backup = CreateMatrixString(15);
+
+    Clone(backup, playground, 15);
+
     int count = 0;
     int score = 0;
 
@@ -331,12 +395,41 @@ int PullWord(string **playground, int **area, int x, int y, string direction, st
         {
             temp = word[count];
 
-            *(*(playground + y) + i) = temp;
-            score += LetterScore(temp) * (*(*(area + y) + i));
+            cout << "| " << *(*(playground + y) + i) << " - " << word[count] << " |" << endl;
+
+            if ((*(*(playground + y) + i) != " ") && ((*(*(playground + y) + i))[0] != word[count]))
+            {
+                Clone(playground, backup, 15);
+                //DeleteMatrix(backup, 15);
+
+                return -1;
+            }
+
+            if (*(*(playground + y) + i) == " ")
+            {
+                *(*(playground + y) + i) = temp;
+
+                if ((*(*(area + y) + i)) > 0)
+                {
+                    score += LetterScore(temp) * (*(*(area + y) + i));
+                }
+                else
+                {
+                    score += LetterScore(temp);
+                    multiplier += -(*(*(area + y) + i));
+                }
+            }
+
             count++;
         }
 
-        return score;
+        //DeleteMatrix(backup, 15);
+        if (multiplier == 0)
+        {
+            multiplier = 1;
+        }
+
+        return score * multiplier;
     }
 
     if (direction == "l")
@@ -345,39 +438,154 @@ int PullWord(string **playground, int **area, int x, int y, string direction, st
         {
             temp = word[count];
 
-            *(*(playground + y) + i) = temp;
-            score += LetterScore(temp) * (*(*(area + y) + i));
+            cout << "| " << *(*(playground + y) + i) << " - " << word[count] << " |" << endl;
+
+            if ((*(*(playground + y) + i) != " ") && ((*(*(playground + y) + i))[0] != word[count]))
+            {
+                Clone(playground, backup, 15);
+                //DeleteMatrix(backup, 15);
+
+                return -1;
+            }
+
+            if (*(*(playground + y) + i) == " ")
+            {
+                *(*(playground + y) + i) = temp;
+
+                if ((*(*(area + y) + i)) > 0)
+                {
+                    score += LetterScore(temp) * (*(*(area + y) + i));
+                }
+                else
+                {
+                    score += LetterScore(temp);
+                    multiplier += -(*(*(area + y) + i));
+                }
+            }
+
             count++;
         }
 
-        return score;
+        //DeleteMatrix(backup, 15);
+        if (multiplier == 0)
+        {
+            multiplier = 1;
+        }
+
+        return score * multiplier;
     }
 
     if (direction == "t")
+    {
+        for (int i = y; i > y - word.size(); i--)
+        {
+            temp = word[count];
+
+            cout << "| " << *(*(playground + i) + x) << " - " << word[count] << " |" << endl;
+
+            if ((*(*(playground + i) + x) != " ") && ((*(*(playground + i) + x))[0] != word[count]))
+            {
+                Clone(playground, backup, 15);
+                //DeleteMatrix(backup, 15);
+
+                return -1;
+            }
+
+            if (*(*(playground + i) + x) == " ")
+            {
+                *(*(playground + i) + x) = temp;
+
+                if ((*(*(area + i) + x)) > 0)
+                {
+                    score += LetterScore(temp) * (*(*(area + i) + x));
+                }
+                else
+                {
+                    score += LetterScore(temp);
+                    multiplier += -(*(*(area + i) + x));
+                }
+            }
+
+            count++;
+        }
+
+        //DeleteMatrix(backup, 15);
+        if (multiplier == 0)
+        {
+            multiplier = 1;
+        }
+
+        return score * multiplier;
+    }
+
+    if (direction == "b")
     {
         for (int i = y; i < y + word.size(); i++)
         {
             temp = word[count];
 
-            *(*(playground + i) + x) = temp;
-            score += LetterScore(temp) * (*(*(area + i) + x));
+            cout << "| " << *(*(playground + i) + x) << " - " << word[count] << " |" << endl;
+
+            if ((*(*(playground + i) + x) != " ") && ((*(*(playground + i) + x))[0] != word[count]))
+            {
+                Clone(playground, backup, 15);
+                //DeleteMatrix(backup, 15);
+
+                return -1;
+            }
+
+            if (*(*(playground + i) + x) == " ")
+            {
+                *(*(playground + i) + x) = temp;
+
+                if ((*(*(area + i) + x)) > 0)
+                {
+                    score += LetterScore(temp) * (*(*(area + i) + x));
+                }
+                else
+                {
+                    score += LetterScore(temp);
+                    multiplier += -(*(*(area + i) + x));
+                }
+            }
+
             count++;
         }
 
-        return score;
-    }
-
-    if (direction == "b")
-    {
-        for (int i = y; i > y + word.size(); i--)
+        //DeleteMatrix(backup, 15);
+        if (multiplier == 0)
         {
-            temp = word[count];
-
-            *(*(playground + i) + x) = temp;
-            score += LetterScore(temp) * (*(*(area + i) + x));
-            count++;
+            multiplier = 1;
         }
 
-        return score;
+        return score * multiplier;
     }
+}
+
+void ChangePlayer(player *&active, player *first, player *second)
+{
+    if (active -> id == first -> id)
+    {
+        active = second;
+        return;
+    }
+
+    if (active -> id == second -> id)
+    {
+        active = first;
+    }
+}
+
+void SwapHand(player *&active, letters *&letterList, string swap)
+{
+    string temp;
+
+    for (int i = 0; i < swap.size(); i++)
+    {
+        temp = swap[i];
+        PushToLetters(letterList, temp, LetterScore(temp));
+        DeleteLetter(active -> list, temp);
+    }
+
+    GiveHand(*active, letterList);
 }

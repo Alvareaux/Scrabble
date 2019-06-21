@@ -43,7 +43,7 @@ void PushToDict(dictionary *&head, string temp)
 
 	for (i = 0; i < temp.size() && temp[i] != ' '; i++)
 	{
-		p -> word += tolower(temp[i]);
+		p -> word += toupper(temp[i]);
 	}
 	for (i; i < temp.size(); i++)
 	{
@@ -118,7 +118,7 @@ void PushToLetters(letters *&head, string word, int n)
 	q -> next = p;
 }
 
-int LetterScore(char letter)
+int LetterScore(string letter)
 {
-
+    return 1;
 }

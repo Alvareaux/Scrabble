@@ -28,6 +28,37 @@ string **CreateMatrixString(int n)
     return arr;
 }
 
+void DeleteMatrix(int **arr, int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        delete []*(arr + i);
+    }
+
+    delete []arr;
+}
+
+void DeleteMatrix(string **arr, int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        delete []*(arr + i);
+    }
+
+    delete []arr;
+}
+
+void Clone(string **arr1, string **arr2, int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            *(*(arr1 + i) + j) = *(*(arr2 + i) + j);
+        }
+    }
+}
+
 
 int InputFromFile(int **arr, int n, string path)
 {

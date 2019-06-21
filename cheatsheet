@@ -1,0 +1,29 @@
+game_func
+
+    void DisplayPlayground(string **playground, int **area, int n = 15);
+        Выводит игровое поле
+
+    void RandLetter(letters *&listHead, letters *&letterHead);
+        Дает одну случайную букву
+
+    void GiveHand(player &p, letters *&letterHead);
+        Дает нужное количество букв
+
+    void InputWord(letters *listHead, string &word);
+        Не выпускает из цикла пока не будет введено нормально слово
+
+    void MakeMove(string **playground, int **area, letters *&listHead, dictionary *dictHead, player &p);
+        Делает ход, вызывает помощника если надо, проверяет слово, проверяет координаты. Удаляет введенные буквы,
+        начисляет очки
+
+    int CheckDirection(int len, int x, int y, string direction);
+        Проверяет координаты начала и конца
+
+    int PullWord(string **playground, int **area, int x, int y, string direction, string word);
+        Закидывает слово в игровое поле, если оно не заменяет другие буквы. Если по итогу слово меняет чужую букву или
+        не существует то удаляет и передает -1, иначе передает очки
+
+    void ChangePlayer(player *&active, player first, player second);
+        Меняет активного игрока
+
+
