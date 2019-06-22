@@ -18,7 +18,7 @@ int main()
 {
 	srand(time(0));
 
-	string path = "area.txt";
+	string path = "C:\\CPrj\\Scrabble\\area.txt";
 
 	string **playground = CreateMatrixString(N);
 

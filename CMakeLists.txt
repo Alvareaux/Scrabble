@@ -8,3 +8,9 @@ add_executable(Scrabble main.cpp
         lib/misc_func.h lib/misc_func.cpp
         lib/game_func.cpp lib/game_func.h
         dictionary/dictionary.cpp dictionary/dictionary.h)
+
+add_executable(Helper helper.cpp
+        lib/additional_func.cpp lib/additional_func.h
+        lib/misc_func.h lib/misc_func.cpp
+        lib/game_func.cpp lib/game_func.h
+        dictionary/dictionary.cpp dictionary/dictionary.h)

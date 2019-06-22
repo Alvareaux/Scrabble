@@ -120,5 +120,109 @@ void PushToLetters(letters *&head, string word, int n)
 
 int LetterScore(string letter)
 {
-    return 1;
+    if (letter == "A")
+    {
+        return 1;
+    }
+    if (letter == "B")
+    {
+        return 3;
+    }
+    if (letter == "C")
+    {
+        return 3;
+    }
+    if (letter == "D")
+    {
+        return 2;
+    }
+    if (letter == "E")
+    {
+        return 1;
+    }
+    if (letter == "F")
+    {
+        return 4;
+    }
+    if (letter == "G")
+    {
+        return 2;
+    }
+    if (letter == "H")
+    {
+        return 4;
+    }
+    if (letter == "I")
+    {
+        return 1;
+    }
+    if (letter == "J")
+    {
+        return 8;
+    }
+    if (letter == "K")
+    {
+        return 5;
+    }
+    if (letter == "L")
+    {
+        return 1;
+    }
+    if (letter == "M")
+    {
+        return 3;
+    }
+    if (letter == "N")
+    {
+        return 1;
+    }
+    if (letter == "O")
+    {
+        return 1;
+    }
+    if (letter == "P")
+    {
+        return 3;
+    }
+    if (letter == "Q")
+    {
+        return 10;
+    }
+    if (letter == "R")
+    {
+        return 1;
+    }
+    if (letter == "S")
+    {
+        return 1;
+    }
+    if (letter == "T")
+    {
+        return 1;
+    }
+    if (letter == "U")
+    {
+        return 1;
+    }
+    if (letter == "V")
+    {
+        return 4;
+    }
+    if (letter == "W")
+    {
+        return 4;
+    }
+    if (letter == "X")
+    {
+        return 8;
+    }
+    if (letter == "Y")
+    {
+        return 4;
+    }
+    if (letter == "Z")
+    {
+        return 10;
+    }
+    return 0;
 }

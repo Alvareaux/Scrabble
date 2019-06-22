@@ -21,9 +21,10 @@ void RandLetter(letters *&listHead, letters *&letterHead);
 void GiveHand(player &p, letters *&letterHead);
 void OutputHand(player *p);
 void InputWord(letters *listHead, string &word);
-void MakeMove(string **playground, int **area, letters *&listHead, dictionary *dictHead, player *&p, player *q);
+void MakeMove(string **playground, int **area, letters *&listHead, dictionary *dictHead, player *&p, player *&q);
 int CheckDirection(int len, int x, int y, string direction);
-int PullWord(dictionary *head, string **playground, int **area, int x, int y, string direction, string word);
+int PullWord(dictionary *head, string **playground, int **area, int x, int y, string direction, string word,
+        int dscore);
 void ChangePlayer(player *&active, player *&passive, player *first, player *second);
 void SwapHand(player *&active, letters *&letterList, string swap);
 int CheckVoid(string **arr, int y, int x);

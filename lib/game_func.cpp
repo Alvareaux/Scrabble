@@ -7,7 +7,6 @@
 #include "misc_func.h"
 #include "../dictionary/dictionary.h"
 #include "additional_func.h"
-#include "../helper.h";
 
 using namespace std;
 
@@ -206,8 +205,13 @@ void InputWord(letters *listHead, string &word)
 		Clone(listHead, tempHead);
 
 		ind = 0;
-		cout << "Make a word: ";
+		cout << "Make a word or write \'*\' to swap or \'-\' to cancel: ";
 		cin >> word;
+		if ((word == "*") || (word == "-"))
+        {
+		    return;
+        }
+
 		if ((word.size() < 1) || (word.size() > 8))
 		{
 			cout << "Wrong number of letters\n";
@@ -228,7 +232,7 @@ void InputWord(letters *listHead, string &word)
 	} while (ind);
 }
 
-void MakeMove(string **playground, int **area, letters *&listHead, dictionary *dictHead, player *&p, player *q)
+void MakeMove(string **playground, int **area, letters *&listHead, dictionary *dictHead, player *&p, player *&q)
 {
 	int choice;
 	string word;
@@ -238,8 +242,10 @@ void MakeMove(string **playground, int **area, letters *&listHead, dictionary *d
 	int x, y;
 	int ind, ind0;
 	int score;
+	int dscore = 1;
 
 	cout << "Make your move" << endl;
+    A:
 	cout << "Want to pick a word manually(1), change hand(-1) or call an assistant(0): ";
 	cin >> choice;
 
@@ -251,7 +257,7 @@ void MakeMove(string **playground, int **area, letters *&listHead, dictionary *d
 
 	if (choice == -1)
 	{
-		cout << "Write letters to swap like \'ABCDC\': ";
+		cout << "Write letters to change like \'ABCDC\': ";
 		cin >> temp;
 		SwapHand(p, listHead, temp);
 	}
@@ -262,8 +268,22 @@ void MakeMove(string **playground, int **area, letters *&listHead, dictionary *d
 		do
 		{
 
-			do{
+			do
+            {
 				InputWord(p->list, word);
+
+                if (word == "*")
+                {
+                    cout << "Write letters to change like \'ABCDC\': ";
+                    cin >> temp;
+                    SwapHand(p, listHead, temp);
+                    return;
+                }
+                if (word == "-")
+                {
+                    goto A;
+                }
+
 				if (Check(dictHead, word))
 				{
 					cout << "There is no such word in your dictionary" << endl;
@@ -273,19 +293,43 @@ void MakeMove(string **playground, int **area, letters *&listHead, dictionary *d
 			ind = 1;
 			do
 			{
-				cout << "Input coordinates of first letter: ";
+				cout << "Input coordinates of first letter or \'-1 -1\' to cancel: ";
 				cin >> y >> x;
+
+				if ((x == -1) || (y == -1))
+                {
+				    goto A;
+                }
 
 				if (((x >= 0) && (y >= 0)) && ((x <= 14) && (y <= 14)))
 				{
 					ind = 0;
 				}
-				if (p->score == 0 && q->score == 0)
+				if ((p -> score == 0) && (q -> score == 0))
 				{
+				    dscore = 0;
 					if (x != 7 || y != 7)
-					{
-						ind = 1;
+                    {
+                        for (int i = x; i < x + word.size(); i++)
+                        {
+                            if ((i == 7) && (y == 7))
+                            {
+                                ind = 0;
+                            }
+                        }
+
+                        for (int i = y; i < y + word.size(); i++)
+                        {
+                            if ((i == 7) && (x == 7))
+                            {
+                                ind = 0;
+                            }
+                        }
 					}
+					else
+                    {
+					    ind = 0;
+                    }
 				}
 				else
 				{
@@ -305,10 +349,10 @@ void MakeMove(string **playground, int **area, letters *&listHead, dictionary *d
 			ind = 1;
 			do
 			{
-				cout << "Input direction(r/l/t/b): ";
+				cout << "Input direction(h/v): ";
 				cin >> direction;
 
-				if (((direction == "r") || (direction == "l")) || ((direction == "t") || (direction == "b")))
+				if ((direction == "v") || (direction == "h"))
 				{
 					if (CheckDirection(word.size(), x, y, direction))
 					{
@@ -325,7 +369,7 @@ void MakeMove(string **playground, int **area, letters *&listHead, dictionary *d
 				}
 			} while (ind);
 
-			score = PullWord(dictHead, playground, area, x, y, direction, word);
+			score = PullWord(dictHead, playground, area, x, y, direction, word, dscore);
 			if (score == -1)
 			{
 				cout << "Letter collision" << endl;
@@ -336,10 +380,12 @@ void MakeMove(string **playground, int **area, letters *&listHead, dictionary *d
 				ind0 = 0;
 			}
 		} while (ind0);
+
 		if (word.size() == 7)
 		{
 			p->score += 50;
 		}
+
 		for (int i = 0; i < word.size(); i++)
 		{
 			temp = word[i];
@@ -350,7 +396,7 @@ void MakeMove(string **playground, int **area, letters *&listHead, dictionary *d
 
 int CheckDirection(int len, int x, int y, string direction)
 {
-	if (direction == "r")
+	if (direction == "h")
 	{
 		x += (len - 1);
 
@@ -364,35 +410,7 @@ int CheckDirection(int len, int x, int y, string direction)
 		}
 	}
 
-	if (direction == "l")
-	{
-		x -= (len - 1);
-
-		if ((x >= 0) && (x <= 14))
-		{
-			return 1;
-		}
-		else
-		{
-			return 0;
-		}
-	}
-
-	if (direction == "t")
-	{
-		y += (len - 1);
-
-		if ((y >= 0) && (y <= 14))
-		{
-			return 1;
-		}
-		else
-		{
-			return 0;
-		}
-	}
-
-	if (direction == "b")
+	if (direction == "h")
 	{
 		y += (len - 1);
 
@@ -407,9 +425,10 @@ int CheckDirection(int len, int x, int y, string direction)
 	}
 }
 
-int PullWord(dictionary *head, string **playground, int **area, int x, int y, string direction, string word)
+int PullWord(dictionary *head, string **playground, int **area, int x, int y, string direction, string word, int dscore)
 {
-	int multiplier = 0;
+	int multiplier = 1;
+	int ind = 0;
 	string **backup = CreateMatrixString(15);
 
 	Clone(backup, playground, 15);
@@ -419,13 +438,13 @@ int PullWord(dictionary *head, string **playground, int **area, int x, int y, st
 
 	string temp;
 
-	if (direction == "r")
+	if (direction == "h")
 	{
 		for (int i = x; i < x + word.size(); i++)
 		{
 			temp = word[count];
 
-			cout << "| " << *(*(playground + y) + i) << " - " << word[count] << " |" << endl;
+			//cout << "| " << *(*(playground + y) + i) << " - " << word[count] << " |" << endl;
 
 			if ((*(*(playground + y) + i) != " ") && ((*(*(playground + y) + i))[0] != word[count]))
 			{
@@ -434,6 +453,11 @@ int PullWord(dictionary *head, string **playground, int **area, int x, int y, st
 
 				return -1;
 			}
+
+            if (((*(*(playground + y) + i))[0] == word[count]) || (dscore == 0))
+            {
+                ind = 1;
+            }
 		
 			if (*(*(playground + y) + i) == " ")
 			{
@@ -442,6 +466,9 @@ int PullWord(dictionary *head, string **playground, int **area, int x, int y, st
 				//if()
 				if (VerticalCheck(head, playground,direction, y, i))
 				{
+                    Clone(playground, backup, 15);
+                    //DeleteMatrix(backup, 15);
+
 					return -1;
 				}
 				
@@ -452,7 +479,7 @@ int PullWord(dictionary *head, string **playground, int **area, int x, int y, st
 				else
 				{
 					score += LetterScore(temp);
-					multiplier += -(*(*(area + y) + i));
+					multiplier *= -(*(*(area + y) + i));
 				}
 			}
 
@@ -460,123 +487,28 @@ int PullWord(dictionary *head, string **playground, int **area, int x, int y, st
 		}
 		if (HorizontalCheck(head, playground,direction, y, x))
 		{
+            Clone(playground, backup, 15);
+            //DeleteMatrix(backup, 15);
 			return -1;
 		}
-		//DeleteMatrix(backup, 15);
-		if (multiplier == 0)
-		{
-			multiplier = 1;
-		}
+
+		if (ind == 0)
+        {
+            Clone(playground, backup, 15);
+            //DeleteMatrix(backup, 15);
+            return -1;
+        }
 
 		return score * multiplier;
 	}
 
-	if (direction == "l")
-	{
-		for (int i = x; i > x - word.size(); i--)
-		{
-			temp = word[count];
-
-			cout << "| " << *(*(playground + y) + i) << " - " << word[count] << " |" << endl;
-
-			if ((*(*(playground + y) + i) != " ") && ((*(*(playground + y) + i))[0] != word[count]))
-			{
-				Clone(playground, backup, 15);
-				//DeleteMatrix(backup, 15);
-
-				return -1;
-			}
-			
-			if (*(*(playground + y) + i) == " ")
-			{
-				*(*(playground + y) + i) = temp;
-				if (VerticalCheck(head, playground, direction, y, i))
-				{
-					return -1;
-				}
-				if ((*(*(area + y) + i)) > 0)
-				{
-					score += LetterScore(temp) * (*(*(area + y) + i));
-				}
-				else
-				{
-					score += LetterScore(temp);
-					multiplier += -(*(*(area + y) + i));
-				}
-			}
-		
-			count++;
-		}
-		if (HorizontalCheck(head, playground, direction, y, x))
-		{
-			return -1;
-		}
-		//DeleteMatrix(backup, 15);
-		if (multiplier == 0)
-		{
-			multiplier = 1;
-		}
-
-		return score * multiplier;
-	}
-
-	if (direction == "t")
-	{
-		for (int i = y; i > y - word.size(); i--)
-		{
-			temp = word[count];
-
-			cout << "| " << *(*(playground + i) + x) << " - " << word[count] << " |" << endl;
-
-			if ((*(*(playground + i) + x) != " ") && ((*(*(playground + i) + x))[0] != word[count]))
-			{
-				Clone(playground, backup, 15);
-				//DeleteMatrix(backup, 15);
-
-				return -1;
-			}
-			
-			if (*(*(playground + i) + x) == " ")
-			{
-				*(*(playground + i) + x) = temp;
-
-				if (HorizontalCheck(head, playground, direction, i, x))
-				{
-					return -1;
-				}
-				if ((*(*(area + i) + x)) > 0)
-				{
-					score += LetterScore(temp) * (*(*(area + i) + x));
-				}
-				else
-				{
-					score += LetterScore(temp);
-					multiplier += -(*(*(area + i) + x));
-				}
-			}
-
-			count++;
-		}
-		if (VerticalCheck(head, playground, direction, y, x))
-		{
-			return -1;
-		}
-		//DeleteMatrix(backup, 15);
-		if (multiplier == 0)
-		{
-			multiplier = 1;
-		}
-
-		return score * multiplier;
-	}
-
-	if (direction == "b")
+	if (direction == "v")
 	{
 		for (int i = y; i < y + word.size(); i++)
 		{
 			temp = word[count];
 
-			cout << "| " << *(*(playground + i) + x) << " - " << word[count] << " |" << endl;
+			//cout << "| " << *(*(playground + i) + x) << " - " << word[count] << " |" << endl;
 
 			if ((*(*(playground + i) + x) != " ") && ((*(*(playground + i) + x))[0] != word[count]))
 			{
@@ -585,12 +517,20 @@ int PullWord(dictionary *head, string **playground, int **area, int x, int y, st
 
 				return -1;
 			}
+
+            if (((*(*(playground + i) + x))[0] == word[count]) || (dscore == 0))
+            {
+                ind = 1;
+            }
 			
 			if (*(*(playground + i) + x) == " ")
 			{
 				*(*(playground + i) + x) = temp;
 				if (HorizontalCheck(head, playground, direction, i, x))
 				{
+                    Clone(playground, backup, 15);
+                    //DeleteMatrix(backup, 15);
+
 					return -1;
 				}
 				if ((*(*(area + i) + x)) > 0)
@@ -600,7 +540,7 @@ int PullWord(dictionary *head, string **playground, int **area, int x, int y, st
 				else
 				{
 					score += LetterScore(temp);
-					multiplier += -(*(*(area + i) + x));
+					multiplier *= -(*(*(area + i) + x));
 				}
 			}
 
@@ -608,13 +548,18 @@ int PullWord(dictionary *head, string **playground, int **area, int x, int y, st
 		}
 		if (VerticalCheck(head, playground, direction, y, x))
 		{
+            Clone(playground, backup, 15);
+            //DeleteMatrix(backup, 15);
+
 			return -1;
 		}
-		//DeleteMatrix(backup, 15);
-		if (multiplier == 0)
-		{
-			multiplier = 1;
-		}
+
+        if (ind == 0)
+        {
+            Clone(playground, backup, 15);
+            //DeleteMatrix(backup, 15);
+            return -1;
+        }
 
 		return score * multiplier;
 	}
@@ -653,27 +598,25 @@ void SwapHand(player *&active, letters *&letterList, string swap)
 
 int CheckVoid(string **arr, int y, int x)
 {
-	if (y - 1 >= 0 && arr[y - 1][x] != " ")
+    int i = 0;
+	if ((y - 1 >= 0) && (arr[y - 1][x] != " "))
 	{
-
-		return 1;
+		i = 1;
 	}
-	if (y + 1 < 15 && arr[y + 1][x] != " ")
+	if ((y + 1 < 15) && (arr[y + 1][x] != " "))
 	{
-
-		return 1;
+        i = 1;
 	}
-	if (x - 1 >= 0 && arr[y][x-1] != " ")
+	if ((x - 1 >= 0) && (arr[y][x-1] != " "))
 	{
-
-		return 1;
+        i = 1;
 	}
-	if (x + 1 < 15 && arr[y][x+1] != " ")
+	if ((x + 1 < 15) && (arr[y][x+1] != " "))
 	{
-
-		return 1;
+        i = 1;
 	}
-	return 0;
+
+	return i;
 }
 int VerticalCheck(dictionary *head, string **arr, string direction, int y, int x)
 {
@@ -704,7 +647,7 @@ int VerticalCheck(dictionary *head, string **arr, string direction, int y, int x
 		}
 		if (Check(head, word))
 		{
-			cout << "there is no such word in your dictionary\n";
+			cout << "There is no such word in your dictionary\n";
 			return 1;
 		}
 	}
