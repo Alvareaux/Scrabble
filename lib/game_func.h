@@ -12,6 +12,7 @@ struct player
 	int id;
 
 	letters *list;
+	int passTime;
 
 	int score;
 };

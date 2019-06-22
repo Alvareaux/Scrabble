@@ -53,6 +53,8 @@ int main()
 		second.id = 2;
 		first.score = 0;
 		second.score = 0;
+		first.passTime = 0;
+		second.passTime = 0;
 
 		first.list = NULL;
 		second.list = NULL;
@@ -70,6 +72,11 @@ int main()
 		int turn = 1;
 		do
 		{
+		    if ((first.passTime == 2) && (second.passTime == 2))
+            {
+                break;
+            }
+
 			system("CLS");
 
 			cout << "SCRABBLE";
@@ -89,8 +96,6 @@ int main()
 			MakeMove(playground, area, letterHead, dictHead, active, passive);
 			GiveHand(*active, letterHead);
 
-			system("pause");
-
 			ChangePlayer(active,passive, &first, &second);
 			turn++;
 		} while (letterHead);
@@ -106,17 +111,13 @@ int main()
 
 		cout << endl;
 
-		DisplayPlayground(playground, area);
-
-		cout << endl;
-
 		if (first.score > second.score)
 		{
-			cout << "\tPlayer 1 win!";
+			cout << "\tPlayer 1 win!\n";
 		}
 		else if (first.score < second.score)
 		{
-			cout << "\tPlayer 2 win!";
+			cout << "\tPlayer 2 win!\n";
 		}
 		else if (first.score == second.score)
 		{

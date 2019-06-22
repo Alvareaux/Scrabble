@@ -195,41 +195,33 @@ void OutputHand(player *p)
 
 void InputWord(letters *listHead, string &word)
 {
-	letters *tempHead = NULL;
-	string letter;
-	string temp;
-	int ind;
+    string letter;
+    string temp;
+    int ind;
 
-	do
-	{
-		Clone(listHead, tempHead);
-
-		ind = 0;
-		cout << "Make a word or write \'*\' to swap or \'-\' to cancel: ";
-		cin >> word;
-		if ((word == "*") || (word == "-"))
+    do
+    {
+        ind = 0;
+        cout << "Make a word: ";
+        cin >> word;
+        if ((word.size() < 1) || (word.size() > 8))
         {
-		    return;
+            cout << "Wrong number of letters\n";
+            ind = 1;
         }
 
-		if ((word.size() < 1) || (word.size() > 8))
-		{
-			cout << "Wrong number of letters\n";
-			ind = 1;
-		}
+        for (int i = 0; i < word.size(); i++)
+        {
+            temp = word[i];
+            if (Check(listHead, temp))
+            {
+                cout << "You used forbidden letters\n";
+                ind = 1;
+            }
+        }
 
-		for (int i = 0; i < word.size(); i++)
-		{
-			temp = word[i];
-			if (Check(tempHead, temp))
-			{
-				cout << "You used forbidden letters\n";
-				ind = 1;
-			}
-			DeleteLetter(tempHead, temp);
-		}
-
-	} while (ind);
+    }
+    while (ind);
 }
 
 void MakeMove(string **playground, int **area, letters *&listHead, dictionary *dictHead, player *&p, player *&q)
@@ -257,9 +249,15 @@ void MakeMove(string **playground, int **area, letters *&listHead, dictionary *d
 
 	if (choice == -1)
 	{
-		cout << "Write letters to change like \'ABCDC\': ";
+		cout << "Write letters to change like \'ABCDC\' or \'-\': ";
 		cin >> temp;
+        if (temp == "-")
+        {
+            return;
+        }
 		SwapHand(p, listHead, temp);
+		(p -> passTime)++;
+        return;
 	}
 	else
 	{
@@ -274,9 +272,14 @@ void MakeMove(string **playground, int **area, letters *&listHead, dictionary *d
 
                 if (word == "*")
                 {
-                    cout << "Write letters to change like \'ABCDC\': ";
+                    cout << "Write letters to change like \'ABCDC\' or \'-\': ";
                     cin >> temp;
+                    if (temp == "-")
+                    {
+                        return;
+                    }
                     SwapHand(p, listHead, temp);
+                    (p -> passTime)++;
                     return;
                 }
                 if (word == "-")
@@ -331,13 +334,6 @@ void MakeMove(string **playground, int **area, letters *&listHead, dictionary *d
 					    ind = 0;
                     }
 				}
-				else
-				{
-					if (!CheckVoid(playground, y, x))
-					{
-						ind = 1;
-					}
-				}
 				if (ind)
 				{
 					cout << "Wrong coordinates" << endl;
@@ -377,6 +373,7 @@ void MakeMove(string **playground, int **area, letters *&listHead, dictionary *d
 			else
 			{
 				p->score += score;
+                p -> passTime = 0;
 				ind0 = 0;
 			}
 		} while (ind0);
@@ -692,4 +689,3 @@ int HorizontalCheck(dictionary *head, string **arr, string direction, int y, int
 
 	return 0;
 }
-

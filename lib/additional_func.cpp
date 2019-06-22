@@ -66,7 +66,7 @@ int Check(dictionary *head, string word)
 		}
 		p = p->next;
 	}
-	return 0;
+	return 1;
 }
 
 int Check(letters *head, string word)
@@ -80,7 +80,7 @@ int Check(letters *head, string word)
 		}
 		p = p->next;
 	}
-	return 0;
+	return 1;
 }
 
 void Clone(letters *head1, letters *&head2)
